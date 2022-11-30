@@ -15,7 +15,7 @@ namespace GIASystem.Components
 {
     public partial class TCPComponent : Field4Component
     {
-        public TCPComponent(GateWaySetting gateWaySetting, GateWay gateWay, SqlMethod sqlMethod, List<Taiwan_DistricsSetting> taiwan_DistricsSettings, GIA_DistricsSetting gIA_DistricsSetting, bool Electricflag = false)
+        public TCPComponent(GateWaySetting gateWaySetting, GateWay gateWay, SqlMethod sqlMethod, List<Taiwan_DistricsSetting> taiwan_DistricsSettings, GIA_DistricsSetting gIA_DistricsSetting)
         {
             InitializeComponent();
             Taiwan_DistricsSettings = taiwan_DistricsSettings;
@@ -23,7 +23,6 @@ namespace GIASystem.Components
             GateWay = gateWay;
             SqlMethod = sqlMethod;
             GIA_DistricsSetting = gIA_DistricsSetting;
-            ElectricFlag = Electricflag;
         }
 
         public TCPComponent(IContainer container)
@@ -37,7 +36,7 @@ namespace GIASystem.Components
             if (myWorkState)
             {
                 Factory = new ModbusFactory();
-                if (!ElectricFlag)
+                if (GateWay.GIAGatewayEnumType != 2)
                 {
                     foreach (var item in GateWay.GateWaySenserIDs)
                     {

@@ -17,7 +17,7 @@ namespace GIASystem.Components
 {
     public partial class SerialportComponent : Field4Component
     {
-        public SerialportComponent(GateWaySetting gateWaySetting, GateWay gateWay, SqlMethod sqlMethod, List<Taiwan_DistricsSetting> taiwan_DistricsSettings, GIA_DistricsSetting gIA_DistricsSetting, bool Electricflag = false)
+        public SerialportComponent(GateWaySetting gateWaySetting, GateWay gateWay, SqlMethod sqlMethod, List<Taiwan_DistricsSetting> taiwan_DistricsSettings, GIA_DistricsSetting gIA_DistricsSetting)
         {
             InitializeComponent();
             Taiwan_DistricsSettings = taiwan_DistricsSettings;
@@ -25,7 +25,6 @@ namespace GIASystem.Components
             GateWay = gateWay;
             SqlMethod = sqlMethod;
             GIA_DistricsSetting = gIA_DistricsSetting;
-            ElectricFlag = Electricflag;
         }
 
         public SerialportComponent(IContainer container)
@@ -39,7 +38,7 @@ namespace GIASystem.Components
             if (myWorkState)
             {
                 Factory = new ModbusFactory();
-                if (!ElectricFlag)
+                if (GateWay.GIAGatewayEnumType != 2)
                 {
                     foreach (var item in GateWay.GateWaySenserIDs)
                     {

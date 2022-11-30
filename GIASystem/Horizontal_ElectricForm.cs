@@ -113,6 +113,10 @@ namespace GIASystem
         /// </summary>
         public Horizontal_ElectricScreenControl Horizontal_ElectricScreenControl { get; set; }
         /// <summary>
+        /// GIA電力資訊化面
+        /// </summary>
+        public Horizontal_GIAElectricScreenControl Horizontal_GIAElectricScreenControl { get; set; }
+        /// <summary>
         /// 設定按鈕
         /// </summary>
         public SettingButtonControl SettingButtonControl { get; set; }
@@ -143,7 +147,7 @@ namespace GIASystem
             {
                 foreach (var Gateitem in GateWaySetting.GateWays)
                 {
-                    GatewayEnumType = (GatewayEnumType)Gateitem.GIAGatewayEnumType; // GIA環境監測器使用
+                    GatewayEnumType = (GatewayEnumType)Gateitem.ElectricGatewayEnumType; // GIA環境監測器使用
                     switch (GatewayEnumType)
                     {
                         case GatewayEnumType.ModbusRTU:
@@ -181,36 +185,11 @@ namespace GIASystem
                             }
                             break;
                     }
-                    if (GateWaySetting.ModeIndex == 1)
-                    {
-                        GatewayEnumType = (GatewayEnumType)Gateitem.ElectricGatewayEnumType; // 電表使用
-                        switch (GatewayEnumType)
-                        {
-                            case GatewayEnumType.ModbusRTU:
-                                {
-                                    SerialportComponent component = new SerialportComponent(GateWaySetting, Gateitem, SqlMethod, Taiwan_DistricsSetting, GIA_DistricsSetting, true);
-                                    component.MyWorkState = GateWaySetting.ControlFlag;
-                                    Field4Components.Add(component);
-                                    AbsProtocols.AddRange(component.AbsProtocols);
-                                }
-                                break;
-                            case GatewayEnumType.ModbusTCP:
-                                {
-                                    TCPComponent component = new TCPComponent(GateWaySetting, Gateitem, SqlMethod, Taiwan_DistricsSetting, GIA_DistricsSetting, true);
-                                    component.MyWorkState = GateWaySetting.ControlFlag;
-                                    Field4Components.Add(component);
-                                    AbsProtocols.AddRange(component.AbsProtocols);
-                                }
-                                break;
-                            case GatewayEnumType.API:
-                                break;
-                        }
-                    }
                 }
             }
             #endregion
             #region 資料庫
-            if (GateWaySetting.RecordFlag & GateWaySetting.ControlFlag & GateWaySetting.ModeIndex == 1)//使用紀錄
+            if (GateWaySetting.RecordFlag & GateWaySetting.ControlFlag & GateWaySetting.ModeIndex == 1 & GateWaySetting.GateWays[0].ElectricGatewayEnumType != 2)//使用紀錄
             {
                 SqlMethod = new SqlMethod() { setting = SqlDBSetting };
                 SqlMethod.SQLConnect();
@@ -270,8 +249,15 @@ namespace GIASystem
                             break;
                     }
                 }
+                if (GateWay.ElectricGatewayEnumType == 2)
+                {
+                    Horizontal_GIAElectricScreenControl = new Horizontal_GIAElectricScreenControl(AbsProtocols, GroupSetting) { Dock = DockStyle.Fill, Parent = OtherpanelControl };
+                }
+                else
+                {
+                    Horizontal_ElectricScreenControl = new Horizontal_ElectricScreenControl(SqlMethod, GroupSetting, GateWaySetting) { Dock = DockStyle.Fill, Parent = OtherpanelControl };
+                }
             }
-            Horizontal_ElectricScreenControl = new Horizontal_ElectricScreenControl(SqlMethod, GroupSetting, GateWaySetting) { Dock = DockStyle.Fill, Parent = OtherpanelControl };
             OtherpanelControl.Parent = pictureEdit1;
             OtherpanelControl.Location = new Point(163, 840);
             SettingButtonControl = new SettingButtonControl(null, this, null);
@@ -373,6 +359,10 @@ namespace GIASystem
             if (Horizontal_ElectricScreenControl != null)
             {
                 Horizontal_ElectricScreenControl.TextChange();
+            }
+            if (Horizontal_GIAElectricScreenControl != null)
+            {
+                Horizontal_GIAElectricScreenControl.TextChange();
             }
             ComponentFail();
         }

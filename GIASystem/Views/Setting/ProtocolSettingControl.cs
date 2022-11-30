@@ -16,6 +16,7 @@ using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Net.Sockets;
+using System.Security.Policy;
 
 namespace GIASystem.Views.Setting
 {
@@ -37,6 +38,7 @@ namespace GIASystem.Views.Setting
         private GateWaySenserID SenserData;
         private GateWayAPI GateWayAPI;
         private List<Taiwan_DistricsSetting> Taiwan_DistricsSetting = new List<Taiwan_DistricsSetting>();
+        private GroupSetting groupSetting = new GroupSetting();
         private List<Data> datas { get; set; } = new List<Data>();
         private GIA_DistricsSetting GIA_DistricsSetting { get; set; }
         public ProtocolSettingControl(SettingButtonControl settingButtonControl, GateWaySetting gateWaySetting, List<Taiwan_DistricsSetting> taiwan_DistricsSetting, GIA_DistricsSetting gIA_DistricsSetting)
@@ -73,6 +75,12 @@ namespace GIASystem.Views.Setting
                 TCP_IDtextEdit.Text = SenserData.DeviceID.ToString();
             }
             URLtextEdit.Text = GateWaySetting.GateWays[0].GIAAPILocation;
+            ElectricURLtextEdit.Text = GateWaySetting.GateWays[0].GIAElectricLocation;
+            if (GateWaySetting.ModeIndex != 1)
+            {
+                ElectricURLtextEdit.Visible = false;
+                labelControl9.Visible = false;
+            }
             WeatherItem(WeathercomboBoxEdit);
             WeathercomboBoxEdit.Text = GateWaySetting.GateWays[0].LocationName;
             switch (WeatherIndex)
@@ -171,6 +179,7 @@ namespace GIASystem.Views.Setting
                                 GateWaySetting.GateWays[0].GateWaySenserIDs.Add(SenserData);
                             }
                             GateWaySetting.GateWays[0].GIAGatewayEnumType = 0;
+                            GateWaySetting.GateWays[0].ElectricGatewayEnumType = 0;
                             GateWaySetting.GateWays[0].ModbusRTULocation = RS485_COMcomboBoxEdit.Text;
                             GateWaySetting.GateWays[0].ModbusRTURate = 9600;
                             SenserData.DeviceID = Convert.ToByte(RS485_IDtextEdit.Text);
@@ -186,6 +195,7 @@ namespace GIASystem.Views.Setting
                                 GateWaySetting.GateWays[0].GateWaySenserIDs.Add(SenserData);
                             }
                             GateWaySetting.GateWays[0].GIAGatewayEnumType = 1;
+                            GateWaySetting.GateWays[0].ElectricGatewayEnumType = 1;
                             GateWaySetting.GateWays[0].ModbusTCPLocation = TCP_IPtextEdit.Text;
                             GateWaySetting.GateWays[0].ModbusTCPRate = 502;
                             SenserData.DeviceID = Convert.ToByte(TCP_IDtextEdit.Text);
@@ -200,8 +210,14 @@ namespace GIASystem.Views.Setting
                                 GateWayAPI = new GateWayAPI();
                                 GateWaySetting.GateWays[0].GateWayAPIs.Add(GateWayAPI);
                             }
+                            if (!string.IsNullOrEmpty(ElectricURLtextEdit.Text) && groupSetting.Groups.Count > 0)
+                            {
+                                InitialMethod.Save_Group(groupSetting);
+                            }
                             GateWaySetting.GateWays[0].GIAGatewayEnumType = 2;
+                            GateWaySetting.GateWays[0].ElectricGatewayEnumType = 2;
                             GateWaySetting.GateWays[0].GIAAPILocation = URLtextEdit.Text;
+                            GateWaySetting.GateWays[0].GIAElectricLocation = ElectricURLtextEdit.Text;
                             GateWayAPI.DeviceIndex = 30;
                             GateWayAPI.APIEnumType = 1;
                         }
@@ -315,8 +331,11 @@ namespace GIASystem.Views.Setting
                         break;
                     case 2:
                         {
+                            bool GIAFlag = false;
+                            bool ElectricFlag = false;
                             try
                             {
+                                #region GIAAPI通訊測試
                                 var option = new RestClientOptions($"{URLtextEdit.Text.Trim()}")
                                 {
                                     MaxTimeout = 3000
@@ -333,19 +352,91 @@ namespace GIASystem.Views.Setting
                                         {
                                             JArray jsonArraydata = JsonConvert.DeserializeObject<JArray>(jsondata["data"].ToString());
                                             GIAAPIValue Value = JsonConvert.DeserializeObject<GIAAPIValue>(jsonArraydata[0]["sensors"].ToString());
-                                            stateIndicatorComponent1.StateIndex = 3;
-                                            ProtocollabelControl.Text = "通訊成功";
+                                            GIAFlag = true;
                                         }
                                         else
                                         {
-                                            stateIndicatorComponent1.StateIndex = 1;
-                                            ProtocollabelControl.Text = "通訊失敗";
+                                            GIAFlag = false;
                                         }
+                                    }
+                                }
+                                #endregion
+                                #region GIAElectric通訊測試
+                                if (GateWaySetting.ModeIndex == 1 && !string.IsNullOrEmpty(ElectricURLtextEdit.Text))
+                                {
+                                    int GroupIndex = 1;
+                                    option = new RestClientOptions($"{ElectricURLtextEdit.Text.Trim()}")
+                                    {
+                                        MaxTimeout = 3000
+                                    };
+                                    using (RestClient client = new RestClient(option))
+                                    {
+                                        var requsest = new RestRequest("", Method.Get);
+                                        var response = client.ExecuteGetAsync(requsest);
+                                        response.Wait();
+                                        JObject jsondata = JsonConvert.DeserializeObject<JObject>(response.Result.Content);
+                                        if (jsondata != null)
+                                        {
+                                            JArray jsonArraydata = JsonConvert.DeserializeObject<JArray>(jsondata["data"].ToString());
+                                            groupSetting = new GroupSetting();
+                                            foreach (var groupitem in (JArray)jsonArraydata[0]["settings"]["pms"]["group"])
+                                            {
+                                                groupSetting.Groups.Add(new Group
+                                                {
+                                                    GroupName = groupitem["alias"].ToString(),
+                                                    GroupIndex = GroupIndex
+                                                });
+                                                GroupIndex++;
+                                            }
+                                            ElectricFlag = true;
+                                        }
+                                        else
+                                        {
+                                            ElectricFlag = false;
+                                        }
+                                    }
+                                }
+                                #endregion
+                                if (GateWaySetting.ModeIndex == 1)
+                                {
+                                    if (GIAFlag && ElectricFlag)
+                                    {
+                                        stateIndicatorComponent1.StateIndex = 3;
+                                        ProtocollabelControl.Text = "通訊成功";
+                                    }
+                                    else if (!GIAFlag && ElectricFlag)
+                                    {
+                                        stateIndicatorComponent1.StateIndex = 1;
+                                        ProtocollabelControl.Text = "GIA通訊失敗";
+                                    }
+                                    else if (GIAFlag && !ElectricFlag)
+                                    {
+                                        stateIndicatorComponent1.StateIndex = 1;
+                                        ProtocollabelControl.Text = "Electric通訊失敗";
+                                    }
+                                    else
+                                    {
+                                        stateIndicatorComponent1.StateIndex = 1;
+                                        ProtocollabelControl.Text = "通訊失敗";
+                                    }
+                                }
+                                else
+                                {
+                                    if (GIAFlag)
+                                    {
+                                        stateIndicatorComponent1.StateIndex = 3;
+                                        ProtocollabelControl.Text = "通訊成功";
+                                    }
+                                    else
+                                    {
+                                        stateIndicatorComponent1.StateIndex = 1;
+                                        ProtocollabelControl.Text = "通訊失敗";
                                     }
                                 }
                             }
                             catch (Exception)
                             {
+                                GIAFlag = false;
                                 stateIndicatorComponent1.StateIndex = 1;
                                 ProtocollabelControl.Text = "通訊失敗";
                             }

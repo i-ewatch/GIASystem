@@ -202,6 +202,8 @@
     <Compile Include="Protocols\AbsProtocol.cs" />
     <Compile Include="Protocols\API\GIAAPIData.cs" />
     <Compile Include="Protocols\API\GIAAPIProtocol.cs" />
+    <Compile Include="Protocols\API\GIAElectricData.cs" />
+    <Compile Include="Protocols\API\GIAElectricProtocol.cs" />
     <Compile Include="Protocols\API\WeatherData.cs" />
     <Compile Include="Protocols\API\WeatherProtocol.cs" />
     <Compile Include="Protocols\ElectricMeter\ABBM2MProtocol.cs" />
@@ -241,6 +243,12 @@
     </Compile>
     <Compile Include="Views\ElectricViews\Horizontal_ElectricScreenControl.Designer.cs">
       <DependentUpon>Horizontal_ElectricScreenControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ElectricViews\Horizontal_GIAElectricScreenControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\ElectricViews\Horizontal_GIAElectricScreenControl.Designer.cs">
+      <DependentUpon>Horizontal_GIAElectricScreenControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Field4UserControl.cs">
       <SubType>UserControl</SubType>
@@ -374,6 +382,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ElectricViews\Horizontal_ElectricScreenControl.resx">
       <DependentUpon>Horizontal_ElectricScreenControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ElectricViews\Horizontal_GIAElectricScreenControl.resx">
+      <DependentUpon>Horizontal_GIAElectricScreenControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\GIAViews\Horizontal_GIABigControl.resx">
       <DependentUpon>Horizontal_GIABigControl.cs</DependentUpon>

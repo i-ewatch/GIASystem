@@ -84,10 +84,6 @@ namespace GIASystem.Components
 
         #endregion
         /// <summary>
-        /// 電表旗標
-        /// </summary>
-        public bool ElectricFlag { get; set; }
-        /// <summary>
         /// 資料庫方法
         /// </summary>
         public SqlMethod SqlMethod { get; set; }

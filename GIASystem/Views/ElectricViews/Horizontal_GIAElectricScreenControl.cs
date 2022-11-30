@@ -1,14 +1,21 @@
-﻿using GIASystem.Configuration;
-using GIASystem.Methods;
+﻿using DevExpress.XtraEditors;
+using GIASystem.Configuration;
+using GIASystem.Protocols;
+using GIASystem.Protocols.API;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GIASystem.Views.ElectricViews
 {
-    public partial class Horizontal_ElectricScreenControl : Field4UserControl
+    public partial class Horizontal_GIAElectricScreenControl : Field4UserControl
     {
         /// <summary>
         /// 顏色改變
@@ -31,36 +38,14 @@ namespace GIASystem.Views.ElectricViews
                 }
             }
         }
-        private List<decimal> value { get; set; } = new List<decimal>();
-        private List<decimal> pricevalue { get; set; } = new List<decimal>();
-
-        private decimal Money { get; set; }
-        private decimal kwh { get; set; }
-        public Horizontal_ElectricScreenControl(SqlMethod sqlMethod, GroupSetting groupSetting, GateWaySetting gateWaySetting)
+        private GIAElectricData GIAElectricData { get; set; }
+        public Horizontal_GIAElectricScreenControl(List<AbsProtocol> absProtocols, GroupSetting groupSetting)
         {
             InitializeComponent();
+            AbsProtocols = absProtocols;
             panelControl1.BackColor = Color.WhiteSmoke;
             pictureEdit.Image = LogoimageCollection.Images[0];
             GroupSetting = groupSetting;
-            GateWaySetting = gateWaySetting;
-            SqlMethod = sqlMethod;
-            value.Clear();
-            pricevalue.Clear();
-            foreach (var item in groupSetting.Groups)
-            {
-                if (value.Count < 4 & value.Count > 0)
-                {
-                    var data = sqlMethod.Serch_TotalMeter_Circel(GroupSetting, item.GroupIndex, 0);
-                    var Pricedata = sqlMethod.Serch_TotalMeter_Circel(GroupSetting, item.GroupIndex, 1);
-                    value.Add(data);
-                    pricevalue.Add(Pricedata);
-                }
-            }
-            for (int i = 0; i < value.Count; i++)
-            {
-                kwh = kwh + value[i];
-                Money = Money + pricevalue[i];
-            }
             ElectricTaskControl electricTask1 = new ElectricTaskControl(0, GroupSetting);
             ElectricTaskControl electricTask2 = new ElectricTaskControl(1, GroupSetting);
             ElectricTaskControls.Add(electricTask1);
@@ -75,28 +60,28 @@ namespace GIASystem.Views.ElectricViews
                     {
                         case 0:
                             {
-                                ElectricCircleControl control = new ElectricCircleControl(this, Color.FromArgb(33, 174, 141), item.GroupName, ElectricCircleControls.Count + 1) { Location = new Point(0, 2) };
+                                ElectricCircleControl control = new ElectricCircleControl(null, Color.FromArgb(33, 174, 141), item.GroupName, ElectricCircleControls.Count + 1, this) { Location = new Point(0, 2) };
                                 ElectricCircleControls.Add(control);
                                 ElectricCircelpanelControl.Controls.Add(control);
                             }
                             break;
                         case 1:
                             {
-                                ElectricCircleControl control = new ElectricCircleControl(this, Color.FromArgb(103, 187, 223), item.GroupName, ElectricCircleControls.Count + 1) { Location = new Point(120, 2) };
+                                ElectricCircleControl control = new ElectricCircleControl(null, Color.FromArgb(103, 187, 223), item.GroupName, ElectricCircleControls.Count + 1, this) { Location = new Point(120, 2) };
                                 ElectricCircleControls.Add(control);
                                 ElectricCircelpanelControl.Controls.Add(control);
                             }
                             break;
                         case 2:
                             {
-                                ElectricCircleControl control = new ElectricCircleControl(this, Color.FromArgb(240, 93, 125), item.GroupName, ElectricCircleControls.Count + 1) { Location = new Point(240, 2) };
+                                ElectricCircleControl control = new ElectricCircleControl(null, Color.FromArgb(240, 93, 125), item.GroupName, ElectricCircleControls.Count + 1, this) { Location = new Point(240, 2) };
                                 ElectricCircleControls.Add(control);
                                 ElectricCircelpanelControl.Controls.Add(control);
                             }
                             break;
                         case 3:
                             {
-                                ElectricCircleControl control = new ElectricCircleControl(this, Color.FromArgb(254, 151, 10), item.GroupName, ElectricCircleControls.Count + 1) { Location = new Point(360, 2) };
+                                ElectricCircleControl control = new ElectricCircleControl(null, Color.FromArgb(254, 151, 10), item.GroupName, ElectricCircleControls.Count + 1, this) { Location = new Point(360, 2) };
                                 ElectricCircleControls.Add(control);
                                 ElectricCircelpanelControl.Controls.Add(control);
                             }
@@ -105,8 +90,12 @@ namespace GIASystem.Views.ElectricViews
                             break;
                     }
                 }
+
             }
+
         }
+
+
         #region 圖片顏色變更
         private void LeftpictureBox_Paint(object sender, PaintEventArgs e)
         {
@@ -140,85 +129,67 @@ namespace GIASystem.Views.ElectricViews
             }
         }
         #endregion
-
-        #region 顯示變更
         public override void TextChange()
         {
             int Index = 0;
-            kwh = 0;
-            Money = 0;
-            value.Clear();
-            pricevalue.Clear();
-            foreach (var item in GroupSetting.Groups)
+            GIAElectricData = (GIAElectricData)AbsProtocols.SingleOrDefault(g => g.Tag.ToString() == "GIAElectricAPI");
+            if (GIAElectricData.ConnectFlag)
             {
-                if (value.Count < 4)
+                foreach (var item in ElectricCircleControls)
                 {
-                    var data = SqlMethod.Serch_TotalMeter_Circel(GroupSetting, item.GroupIndex, 0);
-                    var Pricedata = SqlMethod.Serch_TotalMeter_Circel(GroupSetting, item.GroupIndex, 1);
-                    value.Add(data);
-                    pricevalue.Add(Pricedata);
+                    if (GIAElectricData.Month_Total_kWh == 0)
+                    {
+                        item.TotalValue = 100;
+                    }
+                    else
+                    {
+                        item.TotalValue = GIAElectricData.Month_Total_kWh;
+                    }
+                    item.Value = GIAElectricData.GroupkWhs[Index].Month_Total_kWh;
+                    item.TextChange();
+                    Index++;
                 }
-            }
-            for (int i = 0; i < value.Count; i++)
-            {
-                kwh = kwh + value[i];
-                Money = Money + pricevalue[i];
-            }
-            foreach (var item in ElectricCircleControls)
-            {
-                if (kwh == 0)
+                if (CircelIndex != 0)
                 {
-                    item.TotalValue = 100;
+                    TimeSpan timeSpan = DateTime.Now.Subtract(CircelTime);
+                    if (timeSpan.TotalSeconds < 10)
+                    {
+                        foreach (var item in ElectricTaskControls)
+                        {
+                            item.CircelIndex = CircelIndex;
+                            if (item.DataIndex == 0)
+                            {
+                                item.Value = GIAElectricData.GroupkWhs[circelIndex - 1].Month_Total_kWh;
+                            }
+                            else
+                            {
+                                item.Value = GIAElectricData.GroupkWhs[circelIndex - 1].Month_Total_kWh * GIAElectricData.PriceRate;
+                            }
+                            item.TextChange();
+                        }
+                    }
+                    else
+                    {
+                        circelIndex = 0;
+                    }
                 }
-                else
-                {
-                    item.TotalValue = kwh;
-                }
-                item.Value = value[Index];
-                item.TextChange();
-                Index++;
-            }
-            if (circelIndex != 0)
-            {
-                TimeSpan timeSpan = DateTime.Now.Subtract(CircelTime);
-                if (timeSpan.TotalSeconds < 10)
+                else if (circelIndex == 0)
                 {
                     foreach (var item in ElectricTaskControls)
                     {
                         item.CircelIndex = CircelIndex;
                         if (item.DataIndex == 0)
                         {
-                            item.Value = value[circelIndex - 1];
+                            item.Value = GIAElectricData.Month_Total_kWh;
                         }
                         else
                         {
-                            item.Value = pricevalue[circelIndex - 1];
+                            item.Value = GIAElectricData.Month_Total_kWh * GIAElectricData.PriceRate;
                         }
                         item.TextChange();
                     }
                 }
-                else
-                {
-                    circelIndex = 0;
-                }
-            }
-            else if (circelIndex == 0)
-            {
-                foreach (var item in ElectricTaskControls)
-                {
-                    item.CircelIndex = CircelIndex;
-                    if (item.DataIndex == 0)
-                    {
-                        item.Value = kwh;
-                    }
-                    else
-                    {
-                        item.Value = Money;
-                    }
-                    item.TextChange();
-                }
             }
         }
-        #endregion
     }
 }

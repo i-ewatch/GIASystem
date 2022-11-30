@@ -29,10 +29,10 @@ namespace GIASystem.Views.Setting
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.XtraGauges.Core.Model.IndicatorState indicatorState1 = new DevExpress.XtraGauges.Core.Model.IndicatorState();
-            DevExpress.XtraGauges.Core.Model.IndicatorState indicatorState2 = new DevExpress.XtraGauges.Core.Model.IndicatorState();
-            DevExpress.XtraGauges.Core.Model.IndicatorState indicatorState3 = new DevExpress.XtraGauges.Core.Model.IndicatorState();
-            DevExpress.XtraGauges.Core.Model.IndicatorState indicatorState4 = new DevExpress.XtraGauges.Core.Model.IndicatorState();
+            DevExpress.XtraGauges.Core.Model.IndicatorState indicatorState5 = new DevExpress.XtraGauges.Core.Model.IndicatorState();
+            DevExpress.XtraGauges.Core.Model.IndicatorState indicatorState6 = new DevExpress.XtraGauges.Core.Model.IndicatorState();
+            DevExpress.XtraGauges.Core.Model.IndicatorState indicatorState7 = new DevExpress.XtraGauges.Core.Model.IndicatorState();
+            DevExpress.XtraGauges.Core.Model.IndicatorState indicatorState8 = new DevExpress.XtraGauges.Core.Model.IndicatorState();
             this.ProtocolTabControl = new DevExpress.XtraTab.XtraTabControl();
             this.RS485TabPage = new DevExpress.XtraTab.XtraTabPage();
             this.RS485_IDtextEdit = new DevExpress.XtraEditors.TextEdit();
@@ -51,6 +51,9 @@ namespace GIASystem.Views.Setting
             this.Protocol_TypecomboBoxEdit = new DevExpress.XtraEditors.ComboBoxEdit();
             this.ProtocollabelControl = new DevExpress.XtraEditors.LabelControl();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
+            this.gaugeControl1 = new DevExpress.XtraGauges.Win.GaugeControl();
+            this.stateIndicatorGauge1 = new DevExpress.XtraGauges.Win.Gauges.State.StateIndicatorGauge();
+            this.stateIndicatorComponent1 = new DevExpress.XtraGauges.Win.Gauges.State.StateIndicatorComponent();
             this.ProtocolsimpleButton = new DevExpress.XtraEditors.SimpleButton();
             this.DistrictscomboBoxEdit = new DevExpress.XtraEditors.ComboBoxEdit();
             this.WeathercomboBoxEdit = new DevExpress.XtraEditors.ComboBoxEdit();
@@ -60,9 +63,8 @@ namespace GIASystem.Views.Setting
             this.btn_OK = new DevExpress.XtraEditors.SimpleButton();
             this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
             this.SettingpanelControl = new DevExpress.XtraEditors.PanelControl();
-            this.gaugeControl1 = new DevExpress.XtraGauges.Win.GaugeControl();
-            this.stateIndicatorGauge1 = new DevExpress.XtraGauges.Win.Gauges.State.StateIndicatorGauge();
-            this.stateIndicatorComponent1 = new DevExpress.XtraGauges.Win.Gauges.State.StateIndicatorComponent();
+            this.labelControl9 = new DevExpress.XtraEditors.LabelControl();
+            this.ElectricURLtextEdit = new DevExpress.XtraEditors.TextEdit();
             ((System.ComponentModel.ISupportInitialize)(this.ProtocolTabControl)).BeginInit();
             this.ProtocolTabControl.SuspendLayout();
             this.RS485TabPage.SuspendLayout();
@@ -76,14 +78,15 @@ namespace GIASystem.Views.Setting
             ((System.ComponentModel.ISupportInitialize)(this.Protocol_TypecomboBoxEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.stateIndicatorGauge1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.stateIndicatorComponent1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DistrictscomboBoxEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.WeathercomboBoxEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
             this.groupControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SettingpanelControl)).BeginInit();
             this.SettingpanelControl.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.stateIndicatorGauge1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.stateIndicatorComponent1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ElectricURLtextEdit.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // ProtocolTabControl
@@ -94,7 +97,7 @@ namespace GIASystem.Views.Setting
             this.ProtocolTabControl.Name = "ProtocolTabControl";
             this.ProtocolTabControl.SelectedTabPage = this.RS485TabPage;
             this.ProtocolTabControl.ShowTabHeader = DevExpress.Utils.DefaultBoolean.False;
-            this.ProtocolTabControl.Size = new System.Drawing.Size(621, 51);
+            this.ProtocolTabControl.Size = new System.Drawing.Size(621, 77);
             this.ProtocolTabControl.TabIndex = 5;
             this.ProtocolTabControl.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.RS485TabPage,
@@ -108,7 +111,7 @@ namespace GIASystem.Views.Setting
             this.RS485TabPage.Controls.Add(this.labelControl3);
             this.RS485TabPage.Controls.Add(this.labelControl2);
             this.RS485TabPage.Name = "RS485TabPage";
-            this.RS485TabPage.Size = new System.Drawing.Size(619, 49);
+            this.RS485TabPage.Size = new System.Drawing.Size(619, 23);
             this.RS485TabPage.Text = "RS485TabPage";
             // 
             // RS485_IDtextEdit
@@ -231,15 +234,17 @@ namespace GIASystem.Views.Setting
             // 
             // APITabPage
             // 
+            this.APITabPage.Controls.Add(this.ElectricURLtextEdit);
+            this.APITabPage.Controls.Add(this.labelControl9);
             this.APITabPage.Controls.Add(this.URLtextEdit);
             this.APITabPage.Controls.Add(this.labelControl6);
             this.APITabPage.Name = "APITabPage";
-            this.APITabPage.Size = new System.Drawing.Size(619, 49);
+            this.APITabPage.Size = new System.Drawing.Size(619, 75);
             this.APITabPage.Text = "APITabPage";
             // 
             // URLtextEdit
             // 
-            this.URLtextEdit.Location = new System.Drawing.Point(102, 13);
+            this.URLtextEdit.Location = new System.Drawing.Point(105, 9);
             this.URLtextEdit.Name = "URLtextEdit";
             this.URLtextEdit.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F);
             this.URLtextEdit.Properties.Appearance.Options.UseFont = true;
@@ -256,11 +261,11 @@ namespace GIASystem.Views.Setting
             // 
             this.labelControl6.Appearance.Font = new System.Drawing.Font("Tahoma", 12F);
             this.labelControl6.Appearance.Options.UseFont = true;
-            this.labelControl6.Location = new System.Drawing.Point(48, 17);
+            this.labelControl6.Location = new System.Drawing.Point(29, 13);
             this.labelControl6.Name = "labelControl6";
-            this.labelControl6.Size = new System.Drawing.Size(40, 19);
+            this.labelControl6.Size = new System.Drawing.Size(73, 19);
             this.labelControl6.TabIndex = 4;
-            this.labelControl6.Text = "URL :";
+            this.labelControl6.Text = "GIA URL :";
             // 
             // labelControl1
             // 
@@ -322,9 +327,47 @@ namespace GIASystem.Views.Setting
             this.groupControl1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupControl1.Location = new System.Drawing.Point(2, 2);
             this.groupControl1.Name = "groupControl1";
-            this.groupControl1.Size = new System.Drawing.Size(646, 124);
+            this.groupControl1.Size = new System.Drawing.Size(646, 148);
             this.groupControl1.TabIndex = 5;
             this.groupControl1.Text = "通訊設定";
+            // 
+            // gaugeControl1
+            // 
+            this.gaugeControl1.BackColor = System.Drawing.Color.Transparent;
+            this.gaugeControl1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.gaugeControl1.Gauges.AddRange(new DevExpress.XtraGauges.Base.IGauge[] {
+            this.stateIndicatorGauge1});
+            this.gaugeControl1.Location = new System.Drawing.Point(489, 22);
+            this.gaugeControl1.Name = "gaugeControl1";
+            this.gaugeControl1.Size = new System.Drawing.Size(40, 40);
+            this.gaugeControl1.TabIndex = 16;
+            // 
+            // stateIndicatorGauge1
+            // 
+            this.stateIndicatorGauge1.Bounds = new System.Drawing.Rectangle(6, 6, 28, 28);
+            this.stateIndicatorGauge1.Indicators.AddRange(new DevExpress.XtraGauges.Win.Gauges.State.StateIndicatorComponent[] {
+            this.stateIndicatorComponent1});
+            this.stateIndicatorGauge1.Name = "stateIndicatorGauge1";
+            // 
+            // stateIndicatorComponent1
+            // 
+            this.stateIndicatorComponent1.Center = new DevExpress.XtraGauges.Core.Base.PointF2D(124F, 124F);
+            this.stateIndicatorComponent1.Name = "stateIndicatorComponent1";
+            this.stateIndicatorComponent1.Size = new System.Drawing.SizeF(200F, 200F);
+            this.stateIndicatorComponent1.StateIndex = 0;
+            indicatorState5.Name = "State1";
+            indicatorState5.ShapeType = DevExpress.XtraGauges.Core.Model.StateIndicatorShapeType.ElectricLight1;
+            indicatorState6.Name = "State2";
+            indicatorState6.ShapeType = DevExpress.XtraGauges.Core.Model.StateIndicatorShapeType.ElectricLight2;
+            indicatorState7.Name = "State3";
+            indicatorState7.ShapeType = DevExpress.XtraGauges.Core.Model.StateIndicatorShapeType.ElectricLight3;
+            indicatorState8.Name = "State4";
+            indicatorState8.ShapeType = DevExpress.XtraGauges.Core.Model.StateIndicatorShapeType.ElectricLight4;
+            this.stateIndicatorComponent1.States.AddRange(new DevExpress.XtraGauges.Core.Model.IIndicatorState[] {
+            indicatorState5,
+            indicatorState6,
+            indicatorState7,
+            indicatorState8});
             // 
             // ProtocolsimpleButton
             // 
@@ -341,7 +384,7 @@ namespace GIASystem.Views.Setting
             // 
             // DistrictscomboBoxEdit
             // 
-            this.DistrictscomboBoxEdit.Location = new System.Drawing.Point(448, 50);
+            this.DistrictscomboBoxEdit.Location = new System.Drawing.Point(448, 34);
             this.DistrictscomboBoxEdit.Name = "DistrictscomboBoxEdit";
             this.DistrictscomboBoxEdit.Properties.AllowFocused = false;
             this.DistrictscomboBoxEdit.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F);
@@ -364,7 +407,7 @@ namespace GIASystem.Views.Setting
             // 
             // WeathercomboBoxEdit
             // 
-            this.WeathercomboBoxEdit.Location = new System.Drawing.Point(139, 51);
+            this.WeathercomboBoxEdit.Location = new System.Drawing.Point(139, 35);
             this.WeathercomboBoxEdit.Name = "WeathercomboBoxEdit";
             this.WeathercomboBoxEdit.Properties.AllowFocused = false;
             this.WeathercomboBoxEdit.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F);
@@ -389,7 +432,7 @@ namespace GIASystem.Views.Setting
             // 
             this.labelControl8.Appearance.Font = new System.Drawing.Font("Tahoma", 12F);
             this.labelControl8.Appearance.Options.UseFont = true;
-            this.labelControl8.Location = new System.Drawing.Point(328, 54);
+            this.labelControl8.Location = new System.Drawing.Point(328, 38);
             this.labelControl8.Name = "labelControl8";
             this.labelControl8.Size = new System.Drawing.Size(107, 19);
             this.labelControl8.TabIndex = 8;
@@ -399,7 +442,7 @@ namespace GIASystem.Views.Setting
             // 
             this.labelControl7.Appearance.Font = new System.Drawing.Font("Tahoma", 12F);
             this.labelControl7.Appearance.Options.UseFont = true;
-            this.labelControl7.Location = new System.Drawing.Point(19, 54);
+            this.labelControl7.Location = new System.Drawing.Point(19, 38);
             this.labelControl7.Name = "labelControl7";
             this.labelControl7.Size = new System.Drawing.Size(107, 19);
             this.labelControl7.TabIndex = 7;
@@ -440,9 +483,9 @@ namespace GIASystem.Views.Setting
             this.groupControl2.Controls.Add(this.labelControl8);
             this.groupControl2.Controls.Add(this.labelControl7);
             this.groupControl2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupControl2.Location = new System.Drawing.Point(2, 126);
+            this.groupControl2.Location = new System.Drawing.Point(2, 150);
             this.groupControl2.Name = "groupControl2";
-            this.groupControl2.Size = new System.Drawing.Size(646, 96);
+            this.groupControl2.Size = new System.Drawing.Size(646, 69);
             this.groupControl2.TabIndex = 7;
             this.groupControl2.Text = "天氣設定";
             // 
@@ -458,43 +501,30 @@ namespace GIASystem.Views.Setting
             this.SettingpanelControl.Size = new System.Drawing.Size(650, 261);
             this.SettingpanelControl.TabIndex = 1;
             // 
-            // gaugeControl1
+            // labelControl9
             // 
-            this.gaugeControl1.BackColor = System.Drawing.Color.Transparent;
-            this.gaugeControl1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.gaugeControl1.Gauges.AddRange(new DevExpress.XtraGauges.Base.IGauge[] {
-            this.stateIndicatorGauge1});
-            this.gaugeControl1.Location = new System.Drawing.Point(489, 22);
-            this.gaugeControl1.Name = "gaugeControl1";
-            this.gaugeControl1.Size = new System.Drawing.Size(40, 40);
-            this.gaugeControl1.TabIndex = 16;
+            this.labelControl9.Appearance.Font = new System.Drawing.Font("Tahoma", 12F);
+            this.labelControl9.Appearance.Options.UseFont = true;
+            this.labelControl9.Location = new System.Drawing.Point(7, 47);
+            this.labelControl9.Name = "labelControl9";
+            this.labelControl9.Size = new System.Drawing.Size(95, 19);
+            this.labelControl9.TabIndex = 8;
+            this.labelControl9.Text = "Electric URL :";
             // 
-            // stateIndicatorGauge1
+            // ElectricURLtextEdit
             // 
-            this.stateIndicatorGauge1.Bounds = new System.Drawing.Rectangle(6, 6, 28, 28);
-            this.stateIndicatorGauge1.Indicators.AddRange(new DevExpress.XtraGauges.Win.Gauges.State.StateIndicatorComponent[] {
-            this.stateIndicatorComponent1});
-            this.stateIndicatorGauge1.Name = "stateIndicatorGauge1";
-            // 
-            // stateIndicatorComponent1
-            // 
-            this.stateIndicatorComponent1.Center = new DevExpress.XtraGauges.Core.Base.PointF2D(124F, 124F);
-            this.stateIndicatorComponent1.Name = "stateIndicatorComponent1";
-            this.stateIndicatorComponent1.Size = new System.Drawing.SizeF(200F, 200F);
-            this.stateIndicatorComponent1.StateIndex = 0;
-            indicatorState1.Name = "State1";
-            indicatorState1.ShapeType = DevExpress.XtraGauges.Core.Model.StateIndicatorShapeType.ElectricLight1;
-            indicatorState2.Name = "State2";
-            indicatorState2.ShapeType = DevExpress.XtraGauges.Core.Model.StateIndicatorShapeType.ElectricLight2;
-            indicatorState3.Name = "State3";
-            indicatorState3.ShapeType = DevExpress.XtraGauges.Core.Model.StateIndicatorShapeType.ElectricLight3;
-            indicatorState4.Name = "State4";
-            indicatorState4.ShapeType = DevExpress.XtraGauges.Core.Model.StateIndicatorShapeType.ElectricLight4;
-            this.stateIndicatorComponent1.States.AddRange(new DevExpress.XtraGauges.Core.Model.IIndicatorState[] {
-            indicatorState1,
-            indicatorState2,
-            indicatorState3,
-            indicatorState4});
+            this.ElectricURLtextEdit.Location = new System.Drawing.Point(105, 44);
+            this.ElectricURLtextEdit.Name = "ElectricURLtextEdit";
+            this.ElectricURLtextEdit.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F);
+            this.ElectricURLtextEdit.Properties.Appearance.Options.UseFont = true;
+            this.ElectricURLtextEdit.Properties.Appearance.Options.UseTextOptions = true;
+            this.ElectricURLtextEdit.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.ElectricURLtextEdit.Properties.AppearanceFocused.Font = new System.Drawing.Font("Tahoma", 12F);
+            this.ElectricURLtextEdit.Properties.AppearanceFocused.Options.UseFont = true;
+            this.ElectricURLtextEdit.Properties.AppearanceFocused.Options.UseTextOptions = true;
+            this.ElectricURLtextEdit.Properties.AppearanceFocused.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.ElectricURLtextEdit.Size = new System.Drawing.Size(504, 26);
+            this.ElectricURLtextEdit.TabIndex = 9;
             // 
             // ProtocolSettingControl
             // 
@@ -520,6 +550,8 @@ namespace GIASystem.Views.Setting
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
             this.groupControl1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.stateIndicatorGauge1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.stateIndicatorComponent1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DistrictscomboBoxEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.WeathercomboBoxEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).EndInit();
@@ -527,8 +559,7 @@ namespace GIASystem.Views.Setting
             this.groupControl2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SettingpanelControl)).EndInit();
             this.SettingpanelControl.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.stateIndicatorGauge1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.stateIndicatorComponent1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ElectricURLtextEdit.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -565,5 +596,7 @@ namespace GIASystem.Views.Setting
         private DevExpress.XtraGauges.Win.GaugeControl gaugeControl1;
         private DevExpress.XtraGauges.Win.Gauges.State.StateIndicatorGauge stateIndicatorGauge1;
         private DevExpress.XtraGauges.Win.Gauges.State.StateIndicatorComponent stateIndicatorComponent1;
+        private DevExpress.XtraEditors.TextEdit ElectricURLtextEdit;
+        private DevExpress.XtraEditors.LabelControl labelControl9;
     }
 }

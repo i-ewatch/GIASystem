@@ -59,6 +59,10 @@ namespace GIASystem.Configuration
         /// </summary>
         public string GIAAPILocation { get; set; }
         /// <summary>
+        /// GIA 電表API網址
+        /// </summary>
+        public string GIAElectricLocation { get; set; }
+        /// <summary>
         /// 0 = 新茂氣象資訊API
         /// 1 = 欣寶氣象資訊API
         /// </summary>

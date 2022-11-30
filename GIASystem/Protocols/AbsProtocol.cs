@@ -37,6 +37,10 @@ namespace GIASystem.Protocols
         /// </summary>
         public string GIALocation { get; set; }
         /// <summary>
+        /// GIA電表網址
+        /// </summary>
+        public string GIAElectricLocation { get; set; }
+        /// <summary>
         /// 電表類型
         /// </summary>
         public int ElectricEnumType { get; set; } = -1;

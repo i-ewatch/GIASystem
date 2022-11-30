@@ -57,6 +57,15 @@ namespace GIASystem.Components
                                 }
                             }
                             break;
+                        case APIEnumType.ElectricAPI:
+                            {
+                                if (GateWaySetting.ModeIndex == 1 && GateWay.ElectricGatewayEnumType == 2)
+                                {
+                                    GIAElectricProtocol APIprotocol = new GIAElectricProtocol() { GateWaySetting = GateWaySetting, GatewayIndex = GateWay.GatewayIndex, DeviceIndex = item.DeviceIndex, APIEnumType = 1, GIAElectricLocation = GateWay.GIAElectricLocation, Tag = "GIAElectricAPI" };
+                                    AbsProtocols.Add(APIprotocol);
+                                }
+                            }
+                            break;
                     }
                 }
                 ReadThread = new Thread(Analysis);

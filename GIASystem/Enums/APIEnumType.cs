@@ -16,5 +16,9 @@ namespace GIASystem.Enums
         /// GIA API網址
         /// </summary>
         GIAAPI,
+        /// <summary>
+        /// GIA 電表API網址
+        /// </summary>
+        ElectricAPI
     }
 }
